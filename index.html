@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>10. Sınıf Geometri Macerası - Proje Ödevi</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #ec4899;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            color: #818cf8;
+            font-size: 22px;
+        }
+
+        p.subtitle {
+            color: #94a3b8;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            width: 100%;
+            touch-action: manipulation;
+        }
+
+        .btn:active {
+            opacity: 0.8;
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: #334155;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            font-size: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            touch-action: manipulation;
+        }
+
+        .btn-secondary:active {
+            background: #475569;
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: #cbd5e1;
+            background: rgba(255,255,255,0.05);
+            padding: 10px 12px;
+            border-radius: 8px;
+        }
+
+        .badge {
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .badge.kolay { background-color: #10b981; color: white; }
+        .badge.orta { background-color: #f59e0b; color: white; }
+        .badge.zor { background-color: #ef4444; color: white; }
+
+        .drawing-box {
+            background: #0f172a;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .question-box {
+            font-size: 16px;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            text-align: left;
+            background: rgba(0,0,0,0.2);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .option-btn {
+            background-color: #334155;
+            color: white;
+            border: 2px solid transparent;
+            padding: 12px;
+            text-align: left;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            touch-action: manipulation;
+        }
+
+        .option-btn:active {
+            background-color: #475569;
+        }
+
+        .option-btn.correct {
+            background-color: #10b981 !important;
+            border-color: #059669;
+        }
+
+        .option-btn.wrong {
+            background-color: #ef4444 !important;
+            border-color: #dc2626;
+        }
+
+        .solution-box {
+            background: rgba(79, 70, 229, 0.15);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+            text-align: left;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .solution-title {
+            color: #818cf8;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .navigation-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .navigation-footer .btn {
+            margin-top: 0;
+            width: auto;
+            flex: 1;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .score-display {
+            font-size: 26px;
+            color: #34d399;
+            margin: 15px 0;
+        }
+
+        .creators-footer {
+            text-align: center;
+            color: #64748b;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .creators-footer span {
+            color: #94a3b8;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- GİRİŞ EKRANI -->
+        <div id="start-screen">
+            <h1>Üçgenler Geometri Oyunu</h1>
+            <p class="subtitle">Çözümlü ve İleri/Geri Gezinmeli Sınav Ekranı!</p>
+            <button id="start-btn" class="btn">Sınavı Başlat</button>
+        </div>
+
+        <!-- OYUN EKRANI -->
+        <div id="game-screen" class="hidden">
+            <div class="game-info">
+                <span id="question-number">Soru: 1 / 10</span>
+                <span id="difficulty-badge" class="badge kolay">Kolay</span>
+                <span id="score-text">Puan: 0</span>
+            </div>
+            
+            <div id="drawing-container" class="drawing-box"></div>
+
+            <div id="question-container" class="question-box">Soru buraya gelecek...</div>
+            
+            <div class="options-grid" id="options-container"></div>
+
+            <div id="solution-container" class="solution-box hidden">
+                <div class="solution-title">💡 Çözüm:</div>
+                <div id="solution-text">Çözüm açıklaması burada yer alacak.</div>
+            </div>
+
+            <div class="navigation-footer">
+                <button id="prev-btn" class="btn-secondary">⬅ Önceki</button>
+                <button id="next-btn" class="btn hidden">Sonraki ➡</button>
+            </div>
+        </div>
+
+        <!-- BİTİŞ EKRANI -->
+        <div id="end-screen" class="hidden">
+            <h1>Sınav Bitti!</h1>
+            <p class="subtitle">Geometri Bilgini Başarıyla Test Ettin.</p>
+            <div class="score-display" id="final-score">Puanın: 0</div>
+            <button id="restart-btn" class="btn">Yeniden Başlat</button>
+        </div>
+    </div>
+
+    <div class="creators-footer">
+        Yapımcılar: <span>Enes Özek</span> & <span>Mustafa Kıvanç Öngel</span>
+    </div>
+
+    <script>
+        const questions = [
+            // --- 5 KOLAY ---
+            {
+                question: "1. Şekildeki ABC üçgeninde iç açılar verilmiştir. a açı ölçüsü kaç derecedir?",
+                difficulty: "kolay",
+                drawing: `<svg width="180" height="110" viewBox="0 0 200 120">
+                    <polygon points="20,100 180,100 100,20" fill="none" stroke="#818cf8" stroke-width="2"/>
+                    <text x="92" y="40" fill="#f8fafc" font-size="12">50°</text>
+                    <text x="35" y="95" fill="#f8fafc" font-size="12">60°</text>
+                    <text x="145" y="95" fill="#f8fafc" font-size="12">a</text>
+                    <text x="10" y="115" fill="#94a3b8" font-size="10">A</text>
+                    <text x="185" y="115" fill="#94a3b8" font-size="10">B</text>
+                    <text x="95" y="15" fill="#94a3b8" font-size="10">C</text>
+                </svg>`,
+                options: ["50°", "60°", "70°", "80°"],
+                answer: 2,
+                solution: "Bir üçgenin iç açılarının toplamı her zaman 180°'dir. Verilen açılar: 50° ve 60°. Toplamları 110° yapar. 180 - 110 = 70° bulunur."
+            },
+            {
+                question: "2. Şekildeki ABC üçgeninde G noktası kenarortayların kesim noktasıdır (ağırlık merkezi). |AG| = 8 cm olduğuna göre, |AD| kenarortayının uzunluğu kaç cm'dir?",
+                difficulty: "kolay",
+                drawing: `<svg width="180" height="110" viewBox="0 0 200 120">
+                    <polygon points="50,100 150,100 100,20" fill="none" stroke="#818cf8" stroke-width="2"/>
+                    <line x1="100" y1="20" x2="100" y2="100" stroke="#ec4899" stroke-width="1.5" stroke-dasharray="3"/>
+                    <text x="92" y="65" fill="#34d399" font-size="11">8 cm</text>
+                    <text x="105" y="78" fill="#f8fafc" font-size="11">?</text>
+                    <text x="35" y="115" fill="#94a3b8" font-size="10">B</text>
+                    <text x="155" y="115" fill="#94a3b8" font-size="10">C</text>
+                    <text x="95" y="15" fill="#94a3b8" font-size="10">A</text>
+                    <text x="105" y="60" fill="#34d399" font-size="10">G</text>
+                    <text x="105" y="115" fill="#94a3b8" font-size="10">D</text>
+                </svg>`,
+                options: ["10 cm", "12 cm", "14 cm", "16 cm"],
+                answer: 1,
+                solution: "Kenarortayların kesim noktası (ağırlık merkezi), kenarortayı köşe tarafındandan 2 kat, taban tarafından 1 kat olacak şekilde böler. Yani |AG| = 2k ve |GD| = k'dir. |AG| = 8 cm ise k = 4 cm olur. Toplam kenarortay uzunluğu |AD| = 2k + k = 3k = 3 × 4 = 12 cm'dir."
+            },
+            {
+                question: "3. ABC dik üçgeninde hipotenüsün uzunluğu kaç cm'dir?",
+                difficulty: "kolay",
+                drawing: `<svg width="180" height="110" viewBox="0 0 200 120">
+                    <polygon points="30,100 170,100 30,20" fill="none" stroke="#818cf8" stroke-width="2"/>
+                    <rect x="30" y="84" width="16" height="16" fill="none" stroke="#ec4899" stroke-width="2"/>
+                    <text x="90" y="115" fill="#f8fafc" font-size="12">8 cm</text>
+                    <text x="10" y="65" fill="#f8fafc" font-size="12">6 cm</text>
+                    <text x="110" y="55" fill="#f8fafc" font-size="12">?</text>
+                    <text x="15" y="115" fill="#94a3b8" font-size="10">A</text>
+                    <text x="175" y="115" fill="#94a3b8" font-size="10">B</text>
+                    <text x="15" y="15" fill="#94a3b8" font-size="10">C</text>
+                </svg>`,
+                options: ["8 cm", "10 cm", "12 cm", "14 cm"],
+                answer: 1,
+                solution: "Pisagor teoremine göre: 6² + 8² = c² -> 36 + 64 = 100 -> c = √100 = 10 cm."
+            },
+            {
+                question: "4. Şekildeki dış açı kuralına göre, verilmeyen iç açı x kaç derecedir?",
+                difficulty: "kolay",
+                drawing: `<svg width="180" height="110" viewBox="0 0 200 120">
+                    <polygon points="30,90 140,90 90,30" fill="none" stroke="#ec4899" stroke-width="2"/>
+                    <line x1="140" y1="90" x2="175" y2="90" stroke="#ec4899" stroke-width="2"/>
+                    <text x="150" y="80" fill="#34d399" font-size="11">110°</text>
+                    <text x="45" y="80" fill="#f8fafc" font-size="11">x</text>
+                    <text x="95" y="55" fill="#f8fafc" font-size="11">50°</text>
+                    <text x="15" y="105" fill="#94a3b8" font-size="10">A</text>
+                    <text x="145" y="105" fill="#94a3b8" font-size="10">B</text>
+                    <text x="85" y="22" fill="#94a3b8" font-size="10">C</text>
+                </svg>`,
+                options: ["50°", "60°", "70°", "80°"],
+                answer: 1,
+                solution: "Bir dış açının ölçüsü, kendisine komşu olmayan iki iç açının toplamına eşittir. x + 50° = 110° ise x = 60°'dir."
+            },
+            {
+                question: "5. İkizkenar bir üçgende taban açıları birbirine nasıllıktadır?",
+                difficulty: "kolay",
+                drawing: `<svg width="180" height="110" viewBox="0 0 200 120">
+                    <polygon points="50,100 150,100 100,25" fill="none" stroke="#818cf8" stroke-width="2"/>
+                    <line x1="70" y1="65" x2="78" y2="70" stroke="#ec4899" stroke-width="2"/>
+                    <line x1="122" y1="65" x2="130" y2="70" stroke="#ec4899" stroke-width="2"/>
+                    <text x="35" y="115" fill="#94a3b8" font-size="10">A</text>
+                    <text x="160" y="115" fill="#94a3b8" font-size="10">B</text>
+                    <text x="95" y="18" fill="#94a3b8" font-size="10">C</text>
+                </svg>`,
+                options: ["Eşittir", "Farklıdır", "Biri diğerinin 2 katıdır", "Biri 90 derecedir"],
+                answer: 0,
+                solution: "İkizkenar üçgenlerin eşit kenarlarını gören taban açıları birbirine eşittir."
+            },
+
+            // --- 3 ORTA ---
+            {
+                question: "6. Kenar uzunlukları 5 cm ve 9 cm olan bir ABC üçgeninde, 3. kenar x bir tam sayı ise alabileceği kaç farklı tam sayı değeri vardır?",
+                difficulty: "orta",
+                drawing: `<svg width="180" height="110" viewBox="0 0 200 120">
+                    <polygon points="40,100 160,100 90,30" fill="none" stroke="#f59e0b" stroke-width="2"/>
+                    <text x="95" y="115" fill="#f8fafc" font-size="12">9 cm</text>
+                    <text x="50" y="60" fill="#f8fafc" font-size="12">5 cm</text>
+                    <text x="135" y="60" fill="#f59e0b" font-size="12">x</text>
+                    <text x="25" y="115" fill="#94a3b8" font-size="10">A</text>
+                    <text x="170" y="115" fill="#94a3b8" font-size="10">B</text>
+                    <text x="85" y="22" fill="#94a3b8" font-size="10">C</text>
+                </svg>`,
+                options: ["7", "8", "9", "10"],
+                answer: 2,
+                solution: "Üçgen eşitsizliği: |9 - 5| < x < 9 + 5 -> 4 < x < 14. Bu aralıktaki tam sayılar: 5, 6, 7, 8, 9, 10, 11, 12, 13 olup toplam 9 tanedir."
+            },
+            {
+                question: "7. Şekildeki ABC üçgeninde m(C) = 55° ve m(B) = 65° olduğuna göre en küçük kenar hangisidir?",
+                difficulty: "orta",
+                drawing: `<svg width="180" height="110" viewBox="0 0 200 120">
+                    <polygon points="30,100 170,90 90,20" fill="none" stroke="#f59e0b" stroke-width="2"/>
+                    <text x="95" y="45" fill="#f8fafc" font-size="11">m(C)=55°</text>
+                    <text x="40" y="90" fill="#f8fafc" font-size="11">m(B)=65°</text>
+                    <text x="15" y="115" fill="#94a3b8" font-size="10">A</text>
+                    <text x="180" y="95" fill="#94a3b8" font-size="10">B</text>
+                    <text x="85" y="15" fill="#94a3b8" font-size="10">C</text>
+                </svg>`,
+                options: ["AB Kenarı", "BC Kenarı", "AC Kenarı", "Hepsi eşittir"],
+                answer: 0,
+                solution: "Önce A açısını bulalım: m(B)=65° ve m(C)=55° ise toplamları 120°'dir. m(A) = 180 - 120 = 60°'dir. Açılar: A=60°, B=65°, C=55°. En küçük açı C açısı (55°) olduğundan, C'nin karşısındaki kenar olan AB en kısa kenardır."
+            },
+            {
+                question: "8. Çevresi 36 cm olan eşkenar ABC üçgeninde, A köşe açısından BC kenarına çizilen [AD] kenarortayı kaç cm'dir?",
+                difficulty: "orta",
+                drawing: `<svg width="180" height="110" viewBox="0 0 200 120">
+                    <polygon points="50,105 150,105 100,15" fill="none" stroke="#f59e0b" stroke-width="2"/>
+                    <line x1="100" y1="15" x2="100" y2="105" stroke="#ec4899" stroke-width="2" stroke-dasharray="4"/>
+                    <text x="35" y="115" fill="#94a3b8" font-size="10">B</text>
+                    <text x="155" y="115" fill="#94a3b8" font-size="10">C</text>
+                    <text x="95" y="10" fill="#94a3b8" font-size="10">A</text>
+                    <text x="105" y="60" fill="#34d399" font-size="10">D</text>
+                </svg>`,
+                options: ["6√3", "12", "8√3", "18"],
+                answer: 0,
+                solution: "Çevre 36 cm ise eşkenar üçgenin bir kenarı 36 / 3 = 12 cm'dir. Eşkenar üçgende kenarortay aynı zamanda yüksekliktir. Formül: (a√3) / 2 = (12√3) / 2 = 6√3 cm."
+            },
+
+            // --- 2 ZOR ---
+            {
+                question: "9. ABC ikizkenar üçgeninde taban [BC] uzunluğu 12 cm ve eş kenarlar 10 cm ise, bu üçgenin alanı kaç cm²'dir?",
+                difficulty: "zor",
+                drawing: `<svg width="180" height="110" viewBox="0 0 200 120">
+                    <polygon points="40,100 160,100 100,30" fill="none" stroke="#ef4444" stroke-width="2"/>
+                    <line x1="100" y1="30" x2="100" y2="100" stroke="#f8fafc" stroke-width="1.5" stroke-dasharray="3"/>
+                    <text x="90" y="115" fill="#f8fafc" font-size="12">12 cm</text>
+                    <text x="55" y="60" fill="#f8fafc" font-size="12">10 cm</text>
+                    <text x="25" y="110" fill="#94a3b8" font-size="10">B</text>
+                    <text x="165" y="110" fill="#94a3b8" font-size="10">C</text>
+                    <text x="95" y="22" fill="#94a3b8" font-size="10">A</text>
+                    <text x="105" y="70" fill="#34d399" font-size="10">H</text>
+                </svg>`,
+                options: ["48", "60", "96", "120"],
+                answer: 0,
+                solution: "Tabana indirilen yükseklik tabanı iki eş parçaya böler (6 cm - 6 cm). 6-8-10 özel dik üçgeninden yükseklik h = 8 cm olur. Alan = (Taban × Yükseklik) / 2 = (12 × 8) / 2 = 48 cm²."
+            },
+            {
+                question: "10. ABC üçgeninde I noktası iç açıortayların kesim noktasıdır. BÎC açısı 115° olduğuna göre, A açısı kaç derecedir?",
+                difficulty: "zor",
+                drawing: `<svg width="180" height="110" viewBox="0 0 200 120">
+                    <polygon points="100,15 30,105 170,105" fill="none" stroke="#ef4444" stroke-width="2"/>
+                    <line x1="30" y1="105" x2="100" y2="75" stroke="#818cf8" stroke-width="1.5"/>
+                    <line x1="170" y1="105" x2="100" y2="75" stroke="#818cf8" stroke-width="1.5"/>
+                    <text x="92" y="90" fill="#34d399" font-size="11">115°</text>
+                    <text x="95" y="35" fill="#f8fafc" font-size="11">A</text>
+                    <text x="15" y="115" fill="#94a3b8" font-size="10">B</text>
+                    <text x="175" y="115" fill="#94a3b8" font-size="10">C</text>
+                    <text x="95" y="72" fill="#34d399" font-size="10">I</text>
+                </svg>`,
+                options: ["40°", "50°", "60°", "70°"],
+                answer: 1,
+                solution: "İç açıortayların kesim noktasında oluşan açı kuralı: m(BÎC) = 90° + m(A)/2. 115° = 90° + m(A)/2 -> 25° = m(A)/2 -> m(A) = 50° bulunur."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = {};
+
+        const startScreen = document.getElementById("start-screen");
+        const gameScreen = document.getElementById("game-screen");
+        const endScreen = document.getElementById("end-screen");
+        const questionNumberText = document.getElementById("question-number");
+        const difficultyBadge = document.getElementById("difficulty-badge");
+        const scoreText = document.getElementById("score-text");
+        const drawingContainer = document.getElementById("drawing-container");
+        const questionContainer = document.getElementById("question-container");
+        const optionsContainer = document.getElementById("options-container");
+        const solutionContainer = document.getElementById("solution-container");
+        const solutionText = document.getElementById("solution-text");
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const startBtn = document.getElementById("start-btn");
+        const restartBtn = document.getElementById("restart-btn");
+        const finalScoreText = document.getElementById("final-score");
+
+        function startGame() {
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = {};
+            startScreen.classList.add("hidden");
+            endScreen.classList.add("hidden");
+            gameScreen.classList.remove("hidden");
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const q = questions[currentQuestionIndex];
+            questionNumberText.innerText = `Soru: ${currentQuestionIndex + 1} / ${questions.length}`;
+            
+            difficultyBadge.innerText = q.difficulty.toUpperCase();
+            difficultyBadge.className = `badge ${q.difficulty}`;
+
+            scoreText.innerText = `Puan: ${score}`;
+            drawingContainer.innerHTML = q.drawing;
+            questionContainer.innerText = q.question;
+            solutionText.innerText = q.solution;
+
+            if (currentQuestionIndex === 0) {
+                prevBtn.classList.add("hidden");
+            } else {
+                prevBtn.classList.remove("hidden");
+            }
+
+            optionsContainer.innerHTML = "";
+            solutionContainer.classList.add("hidden");
+            nextBtn.classList.add("hidden");
+
+            const isAnswered = userAnswers[currentQuestionIndex] !== undefined;
+
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement("button");
+                btn.classList.add("option-btn");
+                btn.innerText = opt;
+                
+                if (isAnswered) {
+                    btn.disabled = true;
+                    if (index === q.answer) {
+                        btn.classList.add("correct");
+                    }
+                    if (index === userAnswers[currentQuestionIndex] && index !== q.answer) {
+                        btn.classList.add("wrong");
+                    }
+                    solutionContainer.classList.remove("hidden");
+                    nextBtn.classList.remove("hidden");
+                } else {
+                    btn.addEventListener("click", () => checkAnswer(index, btn));
+                }
+
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIndex, btn) {
+            const q = questions[currentQuestionIndex];
+            userAnswers[currentQuestionIndex] = selectedIndex;
+
+            const allButtons = optionsContainer.querySelectorAll(".option-btn");
+            allButtons.forEach(b => b.disabled = true);
+
+            if (selectedIndex === q.answer) {
+                btn.classList.add("correct");
+                score += 10;
+            } else {
+                btn.classList.add("wrong");
+                allButtons[q.answer].classList.add("correct");
+            }
+
+            scoreText.innerText = `Puan: ${score}`;
+            solutionContainer.classList.remove("hidden");
+            nextBtn.classList.remove("hidden");
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        }
+
+        function endGame() {
+            gameScreen.classList.add("hidden");
+            endScreen.classList.remove("hidden");
+            finalScoreText.innerText = `Toplam Puanın: ${score} / 100`;
+        }
+
+        startBtn.addEventListener("click", startGame);
+        restartBtn.addEventListener("click", startGame);
+        nextBtn.addEventListener("click", nextQuestion);
+        prevBtn.addEventListener("click", prevQuestion);
+    </script>
+</body>
+</html>
